@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WalletFlow - Meme Token</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #00bcd4;
+            --secondary-color: #ff9800;
+            --background-color: #e0f7fa;
+            --text-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .wave-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 1rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #f57c00;
+            transform: scale(1.05);
+        }
+
+        .tokenomics-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .tokenomics-list li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .tokenomics-list li::before {
+            content: '🌊';
+            position: absolute;
+            left: 0;
+        }
+
+        .how-to-buy-steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .how-to-buy-steps li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .how-to-buy-steps li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: var(--primary-color);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .roadmap {
+            position: relative;
+        }
+
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 1rem;
+            width: 2px;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+
+        .roadmap-item {
+            margin-bottom: 2rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        .token-address {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .token-address .copy-icon {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .token-address .copy-icon:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes wave {
+            0% {
+                transform: translateX(0) translateZ(0) scaleY(1);
+            }
+            50% {
+                transform: translateX(-25%) translateZ(0) scaleY(0.55);
+            }
+            100% {
+                transform: translateX(-50%) translateZ(0) scaleY(1);
+            }
+        }
+
+        .wave {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 88.7"><path d="M800 56.9c-155.5 0-204.9-50-405.5-49.9-200 0-250 49.9-394.5 49.9v31.8h800v-.2-31.6z" fill="%23003F7C"/></svg>');
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            animation: wave 10s -3s linear infinite;
+            transform-origin: 50% 0;
+            opacity: 0.1;
+        }
+
+        .wave:nth-of-type(2) {
+            bottom: 0;
+            animation: wave 18s linear reverse infinite;
+            opacity: 0.05;
+        }
+
+        .wave:nth-of-type(3) {
+            bottom: 0;
+            animation: wave 20s -1s linear infinite;
+            opacity: 0.05;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wave-bg">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">WalletFlow</div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#tokenomics">Tokenomics</a>
+                <a href="#how-to-buy">How to Buy</a>
+                <a href="#roadmap">Roadmap</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>WalletFlow</h1>
+            <p>Ride the wave of financial freedom with WalletFlow! Join the ultimate crypto community that flows like a celeb and laughs all the way to the bank! 🌊💰😄🚀</p>
+            <a href="#how-to-buy" class="cta-button">Get WFLOW Now</a>
+        </section>
+
+        <section id="about">
+            <h2>About WalletFlow</h2>
+            <p>WalletFlow is not just another meme token – it's a tidal wave of opportunity in the crypto ocean! Our community-driven project combines the fun of memes with the serious potential of decentralized finance. With WalletFlow, you're not just investing; you're surfing the crest of a financial revolution!</p>
+        </section>
+
+        <section id="tokenomics">
+            <h2>Tokenomics</h2>
+            <ul class="tokenomics-list">
+                <li>Total Supply: 1,000,000,000,000 WFLOW</li>
+                <li>Liquidity Pool: 50% locked for 1 year</li>
+                <li>Marketing Wallet: 5% for promotional activities</li>
+                <li>Community Rewards: 3% redistributed to holders</li>
+            </ul>
+        </section>
+
+        <section id="how-to-buy">
+            <h2>How to Buy</h2>
+            <ol class="how-to-buy-steps">
+                <li>Get a Wallet - Download a reputable Ethereum wallet like MetaMask or Trust Wallet.</li>
+                <li>Acquire ETH - Purchase Ethereum (ETH) from a cryptocurrency exchange like Coinbase or Binance.</li>
+                <li>Connect to a DEX - Connect your wallet to a decentralized exchange (DEX) like Uniswap or SushiSwap.</li>
+                <li>Swap ETH for WFLOW - Use the DEX's swap feature to exchange your ETH for WFLOW.</li>
+            </ol>
+        </section>
+
+        <section id="roadmap">
+            <h2>Roadmap</h2>
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <h3>Phase 1: Launch & Community Building</h3>
+                    <p>We'll launch the token and focus on growing a strong, engaged community of WalletFlow surfers.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 2: Marketing & Partnerships</h3>
+                    <p>We'll ramp up marketing efforts and form strategic partnerships to increase WalletFlow's visibility.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 3: Product Development</h3>
+                    <p>We'll develop new features and utilities for the token, including a WalletFlow mobile app.</p>
+                </div>
+                <div class="roadmap-item">
+                    <h3>Phase 4: Expansion & Beyond</h3>
+                    <p>We'll explore new opportunities, including NFTs and DeFi integrations, to expand WalletFlow's reach.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="token-address">
+            <span>0x1234...5678</span>
+            <i class="fas fa-copy copy-icon"></i>
+        </div>
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fas fa-chart-line"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+            <a href="#" target="_blank"><i class="fas fa-search-dollar"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for section animations
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Ripple effect on buttons
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                
+                let ripple = document.createElement('span');
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Copy token address
+        document.querySelector('.copy-icon').addEventListener('click', function() {
+            const address = this.previousElementSibling.textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                alert('Token address copied to clipboard!');
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Parallax effect for wave background
+        window.addEventListener('scroll', () => {
+            const waves = document.querySelectorAll('.wave');
+            const scrollY = window.scrollY;
+            waves.forEach((wave, index) => {
+                const speed = 0.1 * (index + 1);
+                wave.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
